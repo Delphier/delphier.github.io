@@ -1,4 +1,10 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Delphier.com on Delphier.com</title><link>https://www.delphier.com/</link><description>Recent content in Delphier.com on Delphier.com</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 29 Aug 2019 01:05:15 +0800</lastBuildDate><atom:link href="https://www.delphier.com/" rel="self" type="application/rss+xml"/><item><title>使用 Cloudflare 进行 301 重定向</title><link>https://www.delphier.com/posts/2019/cloudflare-301-redirect/</link><pubDate>Thu, 29 Aug 2019 01:05:15 +0800</pubDate><guid>https://www.delphier.com/posts/2019/cloudflare-301-redirect/</guid><description>&lt;p&gt;使用 Cloudflare 可以将不带 www 的所有链接重定向到 www，或者反之将带 www 的所有链接重定向到不带 www 的裸域名，同时还可以包含子路径。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Delphier.com on Delphier.com</title><link>https://www.delphier.com/</link><description>Recent content in Delphier.com on Delphier.com</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 29 Aug 2019 02:27:57 +0800</lastBuildDate><atom:link href="https://www.delphier.com/" rel="self" type="application/rss+xml"/><item><title>Git Reset 误操作后恢复数据</title><link>https://www.delphier.com/posts/2019/git-reset-recover/</link><pubDate>Thu, 29 Aug 2019 02:27:57 +0800</pubDate><guid>https://www.delphier.com/posts/2019/git-reset-recover/</guid><description>&lt;p&gt;运行 &lt;code&gt;git reset&lt;/code&gt; 后，在 SmartGit 里点了 Discard，而没有 Save Stash，结果发现刚刚建立的新文件全都没了，搜索了一圈发现是可以恢复的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;首先运行 &lt;code&gt;git reflog&lt;/code&gt; 命令查看所有的 HEAD 日志。&lt;/li&gt;
+&lt;li&gt;记住你要恢复的那次 commit 的 7 位记录号。&lt;/li&gt;
+&lt;li&gt;运行 &lt;code&gt;git reset --hard xxxxxxx&lt;/code&gt;， xxxxxxx 为刚才的记录号。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;OK，数据回来了！&lt;/p&gt;</description></item><item><title>使用 Cloudflare 进行 301 重定向</title><link>https://www.delphier.com/posts/2019/cloudflare-301-redirect/</link><pubDate>Thu, 29 Aug 2019 01:05:15 +0800</pubDate><guid>https://www.delphier.com/posts/2019/cloudflare-301-redirect/</guid><description>&lt;p&gt;使用 Cloudflare 可以将不带 www 的所有链接重定向到 www，或者反之将带 www 的所有链接重定向到不带 www 的裸域名，同时还可以包含子路径。&lt;/p&gt;
 &lt;p&gt;方法：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;首先将域名的 DNS 服务器设置为 Cloudflare 的服务器，服务器名后台有说明。&lt;/li&gt;
