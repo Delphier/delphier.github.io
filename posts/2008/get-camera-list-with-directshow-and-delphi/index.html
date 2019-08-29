@@ -1,0 +1,68 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noodp><link rel=prev href=https://www.delphier.com/posts/2008/delphi-enum-to-string/><link rel=next href=https://www.delphier.com/posts/2008/devexpress-v39-delphi-2009/><link rel=canonical href=https://www.delphier.com/posts/2008/get-camera-list-with-directshow-and-delphi/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><title>用 DirectShow 获取本机的视频摄像设备列表 | Delphier.com</title><meta name=title content="用 DirectShow 获取本机的视频摄像设备列表 | Delphier.com"><link rel=stylesheet href=/font/iconfont.css><link rel=stylesheet href=/css/main.min.css><meta name=twitter:card content=summary><meta name=twitter:title content="用 DirectShow 获取本机的视频摄像设备列表"><meta name=twitter:description content="最近的项目用到一个视频模块，要求很简单，就是用本机的摄像头、摄像机或照相机实时拍照获取照片，用 VFW 很容易实现了，不过 avicap 中的函数 capGetDriverDescription 在获取驱动名称"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"用 DirectShow 获取本机的视频摄像设备列表","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.delphier.com\/posts\/2008\/get-camera-list-with-directshow-and-delphi\/"},"genre":"posts","keywords":"Delphi","wordcount":267,"url":"https:\/\/www.delphier.com\/posts\/2008\/get-camera-list-with-directshow-and-delphi\/","datePublished":"2008-09-25T00:00:00\x2b00:00","dateModified":"2008-09-25T00:00:00\x2b00:00","description":""}</script></head><body><div class=wrapper><nav class=navbar><div class=container><div class="navbar-header header-logo"><a href=https://www.delphier.com/>Delphier.com</a></div><div class="menu navbar-right"><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a>
+<a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;</div></div></nav><nav class=navbar-mobile id=nav-mobile style=display:none><div class=container><div class=navbar-header><div><a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;<a href=https://www.delphier.com/>Delphier.com</a></div><div class=menu-toggle><span></span><span></span><span></span></div></div><div class=menu id=mobile-menu><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a></div></div></nav><main class=main><div class=container><article class=post-warp><header class=post-header><h1 class=post-title>用 DirectShow 获取本机的视频摄像设备列表</h1><div class=post-meta>Written by <a href=https://www.delphier.com/ rel=author>Delphier</a> with ♥
+<span class=post-time>on <time datetime=2008-09-25>25 September 2008</time></span>
+in
+<i class="iconfont icon-folder"></i><span class=post-category><a href=https://www.delphier.com/categories/delphi/>Delphi</a></span>
+<i class="iconfont icon-timer"></i>1 min</div></header><div class=post-content><p>最近的项目用到一个视频模块，要求很简单，就是用本机的摄像头、摄像机或照相机实时拍照获取照片，用 VFW 很容易实现了，不过 avicap 中的函数 capGetDriverDescription 在获取驱动名称的时候，只能获取基本接口驱动的名称 Microsoft WDM Image Capture (Win32)，无法获取真实设备的名称，而且没有其它相关函数来实现此功能。</p><p>视频相关的开发现在首选 DirectShow，用 Delphi + DirectShow 很容易就实现了：</p><pre><code class=language-delphi>unit DirectShow;
+
+interface
+
+uses
+    Windows, Messages, SysUtils, Variants, Classes, ActiveX;
+
+const
+    CLSID_SystemDeviceEnum: TGUID = (D1:$62BE5D10;D2:$60EB;D3:$11D0;D4:($BD,$3B,$00,$A0,$C9,$11,$CE,$86));
+    CLSID_VideoInputDeviceCategory: TGUID = (D1:$860BB310;D2:$5D01;D3:$11D0;D4:($BD,$3B,$00,$A0,$C9,$11,$CE,$86));
+    IID_ICreateDevEnum: TGUID = '{29840822-5B84-11D0-BD3B-00A0C911CE86}';
+    IID_IPropertyBag: TGUID = '{55272A00-42CB-11CE-8135-00AA004BB851}';
+
+type
+    ICreateDevEnum = interface(IUnknown)
+        ['{29840822-5B84-11D0-BD3B-00A0C911CE86}']
+        function CreateClassEnumerator(const clsidDeviceClass: TGUID;
+        out ppEnumMoniker: IEnumMoniker; dwFlags: DWORD): HResult; stdcall;
+    end;
+
+procedure GetVideoDeviceList(List: TStrings);
+
+implementation
+
+procedure GetVideoDeviceList(List: TStrings);
+var
+    SysDevEnum: ICreateDevEnum;
+    EnumCat: IEnumMoniker;
+    Moniker: IMoniker;
+    PropBag: IPropertyBag;
+    Fetched: LongInt;
+    VarName: OleVariant;
+begin
+    CoCreateInstance(CLSID_SystemDeviceEnum, nil, CLSCTX_INPROC, IID_ICreateDevEnum, SysDevEnum);
+    SysDevEnum.CreateClassEnumerator(CLSID_VideoInputDeviceCategory, EnumCat, 0);
+
+    List.Clear;
+    while EnumCat.Next(1, Moniker, @Fetched) = S_OK do begin
+        Moniker.BindToStorage(nil, nil, IID_IPropertyBag, PropBag);
+        PropBag.Read('FriendlyName', VarName, nil);
+        List.Add(VarName);
+        PropBag := nil;
+        Moniker := nil;
+    end;
+
+    EnumCat := nil;
+    SysDevEnum := nil;
+end;
+
+end.
+</code></pre></div><div class=post-copyright><p class=copyright-item><span>Author:</span>
+<span>Delphier</span></p><p class=copyright-item><span>Words:</span>
+<span>267</span></p><p class=copyright-item></p></div><div class=post-tags><section><i class="iconfont icon-icon-tag"></i>Tag:
+<span class=tag><a href=https://www.delphier.com/tags/delphi/>#Delphi</a></span></section><section><a href=javascript:window.history.back();>Back</a></span> ·
+<span><a href=https://www.delphier.com/>Home</a></span></section></div><div class=post-nav><a href=https://www.delphier.com/posts/2008/delphi-enum-to-string/ class=prev rel=prev title="转换 Delphi 穷举值为字符串"><i class="iconfont icon-dajiantou"></i>&nbsp;转换 Delphi 穷举值为字符串</a>
+<a href=https://www.delphier.com/posts/2008/devexpress-v39-delphi-2009/ class=next rel=next title="DevExpress v39 开始支持 Delphi 2009">DevExpress v39 开始支持 Delphi 2009&nbsp;<i class="iconfont icon-xiaojiantou"></i></a></div><div class=post-comment></div></article></div></main><footer class=footer><div class=copyright>&copy;
+<span itemprop=copyrightYear>2019 - 2019</span>
+<span class=author itemprop=copyrightHolder><a href=https://www.delphier.com/>Delphier</a> |</span>
+<span>Crafted with ❤️ by <a href=https://github.com/Fastbyte01/KeepIt target=_blank rel="external nofollow noopener noreffer">KeepIt</a> & <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a></span></div></footer><script src=/js/vendor_no_gallery.min.js async></script></div></body></html>

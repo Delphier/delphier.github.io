@@ -1,0 +1,27 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noodp><link rel=prev href=https://www.delphier.com/posts/2008/disable-and-delete-wordpress-revisions/><link rel=next href=https://www.delphier.com/posts/2008/get-camera-list-with-directshow-and-delphi/><link rel=canonical href=https://www.delphier.com/posts/2008/delphi-enum-to-string/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><title>转换 Delphi 穷举值为字符串 | Delphier.com</title><meta name=title content="转换 Delphi 穷举值为字符串 | Delphier.com"><link rel=stylesheet href=/font/iconfont.css><link rel=stylesheet href=/css/main.min.css><meta name=twitter:card content=summary><meta name=twitter:title content="转换 Delphi 穷举值为字符串"><meta name=twitter:description content="在运行时将一个穷举类型的元素值转换为字符串： type TProgrammerType = (tpDelphi, tpCS, tpVB); uses TypInfo; ... var s: string; s := GetEnumName(TypeInfo(TProgrammerType), Integer(tpDelphi)) ; //s = 'tpDelphi' 原文出处：About Delphi Programming 原文地址：Delphi Enum to string"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"转换 Delphi 穷举值为字符串","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.delphier.com\/posts\/2008\/delphi-enum-to-string\/"},"genre":"posts","keywords":"Delphi","wordcount":68,"url":"https:\/\/www.delphier.com\/posts\/2008\/delphi-enum-to-string\/","datePublished":"2008-09-24T00:00:00\x2b00:00","dateModified":"2008-09-24T00:00:00\x2b00:00","description":""}</script></head><body><div class=wrapper><nav class=navbar><div class=container><div class="navbar-header header-logo"><a href=https://www.delphier.com/>Delphier.com</a></div><div class="menu navbar-right"><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a>
+<a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;</div></div></nav><nav class=navbar-mobile id=nav-mobile style=display:none><div class=container><div class=navbar-header><div><a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;<a href=https://www.delphier.com/>Delphier.com</a></div><div class=menu-toggle><span></span><span></span><span></span></div></div><div class=menu id=mobile-menu><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a></div></div></nav><main class=main><div class=container><article class=post-warp><header class=post-header><h1 class=post-title>转换 Delphi 穷举值为字符串</h1><div class=post-meta>Written by <a href=https://www.delphier.com/ rel=author>Delphier</a> with ♥
+<span class=post-time>on <time datetime=2008-09-24>24 September 2008</time></span>
+in
+<i class="iconfont icon-folder"></i><span class=post-category><a href=https://www.delphier.com/categories/delphi/>Delphi</a></span>
+<i class="iconfont icon-timer"></i>1 min</div></header><div class=post-content><p>在运行时将一个穷举类型的元素值转换为字符串：</p><pre><code class=language-delphi>type
+    TProgrammerType = (tpDelphi, tpCS, tpVB);
+
+uses TypInfo;
+...
+
+var s: string;
+s := GetEnumName(TypeInfo(TProgrammerType), Integer(tpDelphi)) ;
+//s = 'tpDelphi'
+</code></pre><p>原文出处：<a href=http://delphi.about.com/>About Delphi Programming</a><br>原文地址：<a href=http://delphi.about.com/cs/adptips2003/a/bltip0103_5.htm>Delphi Enum to string</a></p></div><div class=post-copyright><p class=copyright-item><span>Author:</span>
+<span>Delphier</span></p><p class=copyright-item><span>Words:</span>
+<span>68</span></p><p class=copyright-item></p></div><div class=post-tags><section><i class="iconfont icon-icon-tag"></i>Tag:
+<span class=tag><a href=https://www.delphier.com/tags/delphi/>#Delphi</a></span></section><section><a href=javascript:window.history.back();>Back</a></span> ·
+<span><a href=https://www.delphier.com/>Home</a></span></section></div><div class=post-nav><a href=https://www.delphier.com/posts/2008/disable-and-delete-wordpress-revisions/ class=prev rel=prev title="禁用 WordPress 版本管理并删除已有的文章版本历史"><i class="iconfont icon-dajiantou"></i>&nbsp;禁用 WordPress 版本管理并删除已有的文章版本历史</a>
+<a href=https://www.delphier.com/posts/2008/get-camera-list-with-directshow-and-delphi/ class=next rel=next title="用 DirectShow 获取本机的视频摄像设备列表">用 DirectShow 获取本机的视频摄像设备列表&nbsp;<i class="iconfont icon-xiaojiantou"></i></a></div><div class=post-comment></div></article></div></main><footer class=footer><div class=copyright>&copy;
+<span itemprop=copyrightYear>2019 - 2019</span>
+<span class=author itemprop=copyrightHolder><a href=https://www.delphier.com/>Delphier</a> |</span>
+<span>Crafted with ❤️ by <a href=https://github.com/Fastbyte01/KeepIt target=_blank rel="external nofollow noopener noreffer">KeepIt</a> & <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a></span></div></footer><script src=/js/vendor_no_gallery.min.js async></script></div></body></html>
