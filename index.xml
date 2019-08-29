@@ -65,7 +65,7 @@ config.toml // 站点配置文件
 &lt;a href=&#34;https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d&#34;&gt;Creating and deploying your first Hugo site to Github pages&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Hello Hugo!</title><link>https://www.delphier.com/posts/2019/hello-hugo/</link><pubDate>Tue, 30 Jul 2019 22:01:41 +0800</pubDate><guid>https://www.delphier.com/posts/2019/hello-hugo/</guid><description>&lt;p&gt;Hello Hugo!&lt;/p&gt;
 &lt;p&gt;时间过得真快，间隔十年，重新开始写博客。
 旧博客数据由 WordPress 迁移到了 Hugo。&lt;/p&gt;</description></item><item><title>Faceker.com 停止更新</title><link>https://www.delphier.com/posts/2009/faceker-end/</link><pubDate>Thu, 22 Oct 2009 00:00:00 +0000</pubDate><guid>https://www.delphier.com/posts/2009/faceker-end/</guid><description>&lt;p&gt;准备彻底终止 faceker.com，写了两年 BLOG，试验结束，网站停止更新并注销。&lt;/p&gt;
-&lt;p&gt;听说 fanfou 最近可能要复活，所以如果对 DxAutoInstaller 新版本感兴趣的朋友可以跟踪 &lt;a href=&#34;http://fanfou.com/express。&#34;&gt;http://fanfou.com/express。&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;听说 fanfou 最近可能要复活，所以如果对 DxAutoInstaller 新版本感兴趣的朋友可以跟踪 &lt;a href=&#34;http://fanfou.com/express&#34;&gt;http://fanfou.com/express&lt;/a&gt; 。&lt;/p&gt;
 &lt;p&gt;BYE.&lt;/p&gt;</description></item><item><title>DevExpress VCL Auto-Installer v1.81</title><link>https://www.delphier.com/posts/2009/devexpress-vcl-auto-installer-v181/</link><pubDate>Mon, 07 Sep 2009 00:00:00 +0000</pubDate><guid>https://www.delphier.com/posts/2009/devexpress-vcl-auto-installer-v181/</guid><description>&lt;p&gt;v1.81 小小改动如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;支持 Delphi 2010；&lt;/li&gt;
