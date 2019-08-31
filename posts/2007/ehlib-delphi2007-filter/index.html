@@ -1,0 +1,33 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noodp><link rel=prev href=https://www.delphier.com/posts/2007/sqlserver-convert-to-access/><link rel=next href=https://www.delphier.com/posts/2007/devexpress-expressbars-6-release/><link rel=canonical href=https://www.delphier.com/posts/2007/ehlib-delphi2007-filter/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><title>EhLib 4.1 在 Delphi 2007 下无法过滤和排序的问题 | Delphier.com</title><meta name=title content="EhLib 4.1 在 Delphi 2007 下无法过滤和排序的问题 | Delphier.com"><link rel=stylesheet href=/font/iconfont.css><link rel=stylesheet href=/css/main.min.css><meta name=twitter:card content=summary><meta name=twitter:title content="EhLib 4.1 在 Delphi 2007 下无法过滤和排序的问题"><meta name=twitter:description content="今天将一个程序升级到了 Delphi 2007，该程序是用Delphi7开发的，程序中用到了一个第三方组件EhLib。 原先的 EhLib 是v3.6，无法在Delph"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"EhLib 4.1 在 Delphi 2007 下无法过滤和排序的问题","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.delphier.com\/posts\/2007\/ehlib-delphi2007-filter\/"},"genre":"posts","keywords":"Delphi, EhLib","wordcount":708,"url":"https:\/\/www.delphier.com\/posts\/2007\/ehlib-delphi2007-filter\/","datePublished":"2007-07-30T00:00:00\x2b00:00","dateModified":"2007-07-30T00:00:00\x2b00:00","description":""}</script></head><body><div class=wrapper><nav class=navbar><div class=container><div class="navbar-header header-logo"><a href=https://www.delphier.com/>Delphier.com</a></div><div class="menu navbar-right"><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a>
+<a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;</div></div></nav><nav class=navbar-mobile id=nav-mobile style=display:none><div class=container><div class=navbar-header><div><a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;<a href=https://www.delphier.com/>Delphier.com</a></div><div class=menu-toggle><span></span><span></span><span></span></div></div><div class=menu id=mobile-menu><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a></div></div></nav><main class=main><div class=container><article class=post-warp><header class=post-header><h1 class=post-title>EhLib 4.1 在 Delphi 2007 下无法过滤和排序的问题</h1><div class=post-meta>Written by <a href=https://www.delphier.com/ rel=author>Delphier</a> with ♥
+<span class=post-time>on <time datetime=2007-07-30>30 July 2007</time></span>
+in
+<i class="iconfont icon-folder"></i><span class=post-category><a href=https://www.delphier.com/categories/delphi/>Delphi</a></span>
+<i class="iconfont icon-timer"></i>2 min</div></header><div class=post-content><p>今天将一个程序升级到了 Delphi 2007，该程序是用Delphi7开发的，程序中用到了一个第三方组件<a href=http://www.ehlib.com/>EhLib</a>。</p><p>原先的 EhLib 是v3.6，无法在Delphi2007下安装，所以安装了最新的 v4.1。</p><p>原先正常的程序，在升级后，发现 DBGridEh 无法进行排序和过滤，执行操作时无反应。后来发现，如果选择本地过滤和排序的话，一切都会正常；如果是服务器端排序和过滤，则无法正常执行，错误信息为类型转换错误。</p><p>跟踪EhLib代码发现，是DBUtilsEh.pas文件中的SetDataSetSQLLikeProp 和IsDataSetHaveSQLLikeProp 函数中的以下相关代码报错：</p><pre><code class=language-delphi>……
+if (TObject(GetOrdProp(DataSet, FPropInfo)) as TStrings) &lt;&gt; nil then
+    SQLPropValue := (TObject(GetOrdProp(DataSet, FPropInfo)) as TStrings).Text
+……
+</code></pre><p>具体的类型转换错误是指TObject与TStrings转换错误，所以报错。
+我用的是ADOQuery，其SQL属性在Delphi7下是TStrings类型，在Delphi2007下是TWideStrings，由TObject转换为TStrings按理说不应该转换不成功啊。</p><p>继续查看代码才发现：
+TWideStrings没有继承自TStrings，而是继承自TPersistent，理论上跟TStrings没有关系，将他转换为TStrings，当然会报错了。</p><p>找到原因后，将EhLib相关出错函数的代码改为以下：</p><pre><code class=language-delphi>……
+if TObject(GetOrdProp(DataSet, FPropInfo)) is TStrings then
+    SQLPropValue := (TObject(GetOrdProp(DataSet, FPropInfo)) as TStrings).Text
+else if TObject(GetOrdProp(DataSet, FPropInfo)) is TWideStrings then
+    SQLPropValue := (TObject(GetOrdProp(DataSet, FPropInfo)) as TWideStrings).Text
+else
+    Exit;
+……
+</code></pre><p>修改后，重新编译，一切正常。</p><p>附1：<a href=http://netrobo.googlepages.com/DbUtilsEh.pas>修改后的DBUtilsEh.pas文件</a>；<br>附2：在Delphi2007中安装EhLib4.1时会报错，注释掉EhLibVCL.pas文件中的“TBytes = array of Byte”行即可正常安装（Delphi2007自己定义了TBytes）。</p></div><div class=post-copyright><p class=copyright-item><span>Author:</span>
+<span>Delphier</span></p><p class=copyright-item><span>Words:</span>
+<span>708</span></p><p class=copyright-item></p></div><div class=post-tags><section><i class="iconfont icon-icon-tag"></i>Tag:
+<span class=tag><a href=https://www.delphier.com/tags/delphi/>#Delphi</a></span>
+<span class=tag><a href=https://www.delphier.com/tags/ehlib/>#EhLib</a></span></section><section><a href=javascript:window.history.back();>Back</a></span> ·
+<span><a href=https://www.delphier.com/>Home</a></span></section></div><div class=post-nav><a href=https://www.delphier.com/posts/2007/sqlserver-convert-to-access/ class=prev rel=prev title="SQL Server 数据库转换为 Access 数据库"><i class="iconfont icon-dajiantou"></i>&nbsp;SQL Server 数据库转换为 Access 数据库</a>
+<a href=https://www.delphier.com/posts/2007/devexpress-expressbars-6-release/ class=next rel=next title="DevExpress ExpressBars 6 发布！支持 Ribbons 界面！">DevExpress ExpressBars 6 发布！支持 Ribbons 界面！&nbsp;<i class="iconfont icon-xiaojiantou"></i></a></div><div class=post-comment></div></article></div></main><footer class=footer><div class=copyright>&copy;
+<span itemprop=copyrightYear>2019 - 2019</span>
+<span class=author itemprop=copyrightHolder><a href=https://www.delphier.com/>Delphier</a> |</span>
+<span>Crafted with ❤️ by <a href=https://github.com/Fastbyte01/KeepIt target=_blank rel="external nofollow noopener noreffer">KeepIt</a> & <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a></span></div></footer><script src=/js/vendor_no_gallery.min.js async></script></div></body></html>

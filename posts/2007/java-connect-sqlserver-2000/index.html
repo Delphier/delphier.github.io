@@ -1,0 +1,43 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noodp><link rel=prev href=https://www.delphier.com/posts/2007/start-blogging/><link rel=next href=https://www.delphier.com/posts/2007/why-korea-use-chinese/><link rel=canonical href=https://www.delphier.com/posts/2007/java-connect-sqlserver-2000/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><title>Java连接SQL Server 2000 | Delphier.com</title><meta name=title content="Java连接SQL Server 2000 | Delphier.com"><link rel=stylesheet href=/font/iconfont.css><link rel=stylesheet href=/css/main.min.css><meta name=twitter:card content=summary><meta name=twitter:title content="Java连接SQL Server 2000"><meta name=twitter:description content=数据库操作现在是项目开发的根本，学习Java首先应该学会怎么样连接数据库，用Java连接数据库可不像用Delphi这类工具那样设几个属性就O><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Java连接SQL Server 2000","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.delphier.com\/posts\/2007\/java-connect-sqlserver-2000\/"},"genre":"posts","keywords":"Java","wordcount":1308,"url":"https:\/\/www.delphier.com\/posts\/2007\/java-connect-sqlserver-2000\/","datePublished":"2007-06-10T00:00:00\x2b00:00","dateModified":"2007-06-10T00:00:00\x2b00:00","description":""}</script></head><body><div class=wrapper><nav class=navbar><div class=container><div class="navbar-header header-logo"><a href=https://www.delphier.com/>Delphier.com</a></div><div class="menu navbar-right"><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a>
+<a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;</div></div></nav><nav class=navbar-mobile id=nav-mobile style=display:none><div class=container><div class=navbar-header><div><a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;<a href=https://www.delphier.com/>Delphier.com</a></div><div class=menu-toggle><span></span><span></span><span></span></div></div><div class=menu id=mobile-menu><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a></div></div></nav><main class=main><div class=container><article class=post-warp><header class=post-header><h1 class=post-title>Java连接SQL Server 2000</h1><div class=post-meta>Written by <a href=https://www.delphier.com/ rel=author>Delphier</a> with ♥
+<span class=post-time>on <time datetime=2007-06-10>10 June 2007</time></span>
+in
+<i class="iconfont icon-folder"></i><span class=post-category><a href=https://www.delphier.com/categories/java/>Java</a></span>
+<i class="iconfont icon-timer"></i>3 min</div></header><div class=post-content><p>数据库操作现在是项目开发的根本，学习Java首先应该学会怎么样连接数据库，用Java连接数据库可不像用Delphi这类工具那样设几个属性就OK，说 简单也简单，说复杂，其实也挺复杂的，而且很麻烦，如果是初学，根本不能保证第一次就连接成功，下面以SQL Server 2000为例，说说Java连接数据库的基本方法，也记录一下心得。</p><h2 id=1-下载sql-server-2000-driver-for-jdbc>1、下载SQL Server 2000 driver for JDBC</h2><p><a href="http://www.microsoft.com/downloads/results.aspx?displaylang=en&amp;freeText=sql+server+2000+driver+for+jdbc">SQL Server 2000 Driver For JDBC Downloads</a><br>该驱动截止目前有四个版本，建议下载最新的SP3版。<br>该驱动安装成功后，请将安装目录下的lib目录下的三个.jar文件加到CLASSPATH中；如果你使用的是JBuilder或Eclipse，将这三个文件根据IDE的提示加到工程中也可。</p><h2 id=2-升级你的sql-server-2000-为其打上最新的补丁>2、升级你的SQL Server 2000，为其打上最新的补丁。</h2><p>这一步可能不是必需的，因操作系统环境而定，在不打补丁的情况，有时可以正常连接，有时却不能，所以建议还是安装最新的SQL Server 2000补丁（SP4）和JDBC驱动（SP3）。
+如果你的程序在运行时提示：Error establishing socket，一般情况下，打上SQL Server 2000的补丁就可解决。</p><h2 id=3-驱动的加载方法>3、驱动的加载方法</h2><p>在建立连接之前，要先加载SQL Server 2000 JDBC的驱动，代码形式如下：</p><pre><code class=language-java>Class.forName(“com.microsoft.jdbc.sqlserver.SQLServerDriver”);
+</code></pre><p>在此注意，forName方法的参数字符串必须完全相同于以上内容，大小写是区分的，其实这个串就是驱动类的完整名称：包名+类名。</p><h2 id=4-获得一个连接>4、获得一个连接</h2><p>在操作数据库之前，要先获得与数据库的一个连接，使用如下代码格式：</p><pre><code class=language-java>DriverManager.getConnection(连接字符串, 登录用户名, 登录密码);
+</code></pre><p>例：</p><pre><code class=language-java>DriverManager.getConnection(“jdbc:microsoft:sqlserver://localhost:1433; DatabaseName=pubs”, “sa”, “”);
+</code></pre><p>在此处关键的是连接字符串的内容，localhost部分即服务器的名字，可以更改；1433部分为SQL Server使用的端口号，根据实际情况修改即可；DatabaseName即为要连接的数据库的名字，在此注意DatabaseName之前的是分号， 而不是冒号。</p><h2 id=5-代码实例>5、代码实例</h2><pre><code class=language-java>// 导入Java SQL包，连接数据库必需；
+import java.sql.*;
+
+public class TestDB {
+    public static void main(String[] args) {
+        String driverName = &quot;com.microsoft.jdbc.sqlserver.SQLServerDriver&quot;;
+        String dbURL = &quot;jdbc:microsoft:sqlserver://localhost:1433; DatabaseName=pubs&quot;;
+        String userName = &quot;sa&quot;;
+        String userPwd = &quot;&quot;;
+        Connection dbConn
+
+        try {
+            Class.forName(driverName);
+            dbConn = DriverManager.getConnection(dbURL, userName, userPwd);
+            System.out.println(&quot;Connection Successful!&quot;);
+        }
+        Catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre><h2 id=6-可能出现的问题>6、可能出现的问题</h2><p>如果以上的代码运行后，输出”Connection Successful!”，那就代表一切正常，连接数据库成功，你可以进行Statement、ResultSet的操作了；反之的话，一定是出现了相应的异常。</p><p>如果提示错误”Error establishing socket”，请根据之前的说明安装相应的SQL Server 2000补丁即可。</p><p>如果提示”ClassNotFoundException”，那一定是 Class.forName(“com.microsoft.jdbc.sqlserver.SQLServerDriver”); 该段代码拼写有误，或者是SQL Server 2000 Driver For JDBC Lib目录下的三个.jar文件未加入到CLASSPATH中。</p></div><div class=post-copyright><p class=copyright-item><span>Author:</span>
+<span>Delphier</span></p><p class=copyright-item><span>Words:</span>
+<span>1308</span></p><p class=copyright-item></p></div><div class=post-tags><section><i class="iconfont icon-icon-tag"></i>Tag:
+<span class=tag><a href=https://www.delphier.com/tags/java/>#Java</a></span></section><section><a href=javascript:window.history.back();>Back</a></span> ·
+<span><a href=https://www.delphier.com/>Home</a></span></section></div><div class=post-nav><a href=https://www.delphier.com/posts/2007/start-blogging/ class=prev rel=prev title=onefly.org，开博！><i class="iconfont icon-dajiantou"></i>&nbsp;onefly.org，开博！</a>
+<a href=https://www.delphier.com/posts/2007/why-korea-use-chinese/ class=next rel=next title=韩国为什么使用中国汉字？>韩国为什么使用中国汉字？&nbsp;<i class="iconfont icon-xiaojiantou"></i></a></div><div class=post-comment></div></article></div></main><footer class=footer><div class=copyright>&copy;
+<span itemprop=copyrightYear>2019 - 2019</span>
+<span class=author itemprop=copyrightHolder><a href=https://www.delphier.com/>Delphier</a> |</span>
+<span>Crafted with ❤️ by <a href=https://github.com/Fastbyte01/KeepIt target=_blank rel="external nofollow noopener noreffer">KeepIt</a> & <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a></span></div></footer><script src=/js/vendor_no_gallery.min.js async></script></div></body></html>

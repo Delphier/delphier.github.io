@@ -1,0 +1,27 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content=noodp><link rel=prev href=https://www.delphier.com/posts/2007/php-mysql-last-insert-id/><link rel=next href=https://www.delphier.com/posts/2007/taobao-forum-girl/><link rel=canonical href=https://www.delphier.com/posts/2007/html-fckeditor/><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><meta name=msapplication-TileColor content=#da532c><meta name=theme-color content=#ffffff><title>HTML 编辑器：FCKeditor | Delphier.com</title><meta name=title content="HTML 编辑器：FCKeditor | Delphier.com"><link rel=stylesheet href=/font/iconfont.css><link rel=stylesheet href=/css/main.min.css><meta name=twitter:card content=summary><meta name=twitter:title content="HTML 编辑器：FCKeditor"><meta name=twitter:description content="最近需要一个 online HTML text editor，搜了一下，找到了 FCKeditor，看了一下，原来 Intervals 用的就是他，一看他们的用户名单，不得了，Adobe、Or"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"HTML 编辑器：FCKeditor","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.delphier.com\/posts\/2007\/html-fckeditor\/"},"genre":"posts","keywords":"PHP","wordcount":301,"url":"https:\/\/www.delphier.com\/posts\/2007\/html-fckeditor\/","datePublished":"2007-07-25T00:00:00\x2b00:00","dateModified":"2007-07-25T00:00:00\x2b00:00","description":""}</script></head><body><div class=wrapper><nav class=navbar><div class=container><div class="navbar-header header-logo"><a href=https://www.delphier.com/>Delphier.com</a></div><div class="menu navbar-right"><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a>
+<a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;</div></div></nav><nav class=navbar-mobile id=nav-mobile style=display:none><div class=container><div class=navbar-header><div><a href=javascript:void(0); class=theme-switch><i class="iconfont icon-sun"></i></a>&nbsp;<a href=https://www.delphier.com/>Delphier.com</a></div><div class=menu-toggle><span></span><span></span><span></span></div></div><div class=menu id=mobile-menu><a class=menu-item href=/posts/>Blog</a>
+<a class=menu-item href=https://github.com/Delphier/DxAutoInstaller>DxAutoInstaller</a>
+<a class=menu-item href=/categories/>Categories</a></div></div></nav><main class=main><div class=container><article class=post-warp><header class=post-header><h1 class=post-title>HTML 编辑器：FCKeditor</h1><div class=post-meta>Written by <a href=https://www.delphier.com/ rel=author>Delphier</a> with ♥
+<span class=post-time>on <time datetime=2007-07-25>25 July 2007</time></span>
+in
+<i class="iconfont icon-folder"></i><span class=post-category><a href=https://www.delphier.com/categories/php/>PHP</a></span>
+<i class="iconfont icon-timer"></i>1 min</div></header><div class=post-content><p>最近需要一个 online HTML text editor，搜了一下，找到了 <a href=http://www.fckeditor.net/>FCKeditor</a>，看了一下，原来 Intervals 用的就是他，一看他们的用户名单，不得了，Adobe、Oracle等等等等都在列啊。</p><p>功能不必多说了，肯定是超强了，支持 JAVA、PHP、ASP.NET、ASP等等，在PHP下使用也很简单：</p><p>1、下载解压到网站的一目录，如：/fckeditor/；</p><p>2、写以下的 PHP 代码：</p><pre><code class=language-php>&lt;?php
+    include(‘/fckeditor/fckeditor.php’);
+    $editor = new FCKeditor (‘news_content’); // 参数为 FORM 要 POST 的 Name；
+    $editor-&gt;BasePath = ‘/fckeditor/’; // FCKeditor 的安装路径；
+    $editor-&gt;Value = ”; // 缺省值；
+    $editor-&gt;Width = ‘100%’;
+    $editor-&gt;Height = ‘500’;
+    $editor-&gt;Create();
+?&gt;
+</code></pre><p>如此简单！</p></div><div class=post-copyright><p class=copyright-item><span>Author:</span>
+<span>Delphier</span></p><p class=copyright-item><span>Words:</span>
+<span>301</span></p><p class=copyright-item></p></div><div class=post-tags><section><i class="iconfont icon-icon-tag"></i>Tag:
+<span class=tag><a href=https://www.delphier.com/tags/php/>#PHP</a></span></section><section><a href=javascript:window.history.back();>Back</a></span> ·
+<span><a href=https://www.delphier.com/>Home</a></span></section></div><div class=post-nav><a href=https://www.delphier.com/posts/2007/php-mysql-last-insert-id/ class=prev rel=prev title="PHP-MySQL：获得最后插入的 ID"><i class="iconfont icon-dajiantou"></i>&nbsp;PHP-MySQL：获得最后插入的 ID</a>
+<a href=https://www.delphier.com/posts/2007/taobao-forum-girl/ class=next rel=next title=淘宝社区首页上一张很可疑的照片>淘宝社区首页上一张很可疑的照片&nbsp;<i class="iconfont icon-xiaojiantou"></i></a></div><div class=post-comment></div></article></div></main><footer class=footer><div class=copyright>&copy;
+<span itemprop=copyrightYear>2019 - 2019</span>
+<span class=author itemprop=copyrightHolder><a href=https://www.delphier.com/>Delphier</a> |</span>
+<span>Crafted with ❤️ by <a href=https://github.com/Fastbyte01/KeepIt target=_blank rel="external nofollow noopener noreffer">KeepIt</a> & <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreffer">Hugo</a></span></div></footer><script src=/js/vendor_no_gallery.min.js async></script></div></body></html>
